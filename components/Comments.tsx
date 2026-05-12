@@ -128,6 +128,7 @@ function CommentRow({
   onSeek?: (sec: number) => void;
 }) {
   const [liked, setLiked] = useState(false);
+  const [repliesOpen, setRepliesOpen] = useState(false);
   return (
     <div className="flex gap-3 group/comment">
       <img
@@ -179,7 +180,7 @@ function CommentRow({
           {comment.creatorHearted && (
             <span className="relative" title="投稿者がハートを送りました">
               <img
-                src="https://picsum.photos/seed/ringo-avatar/96/96"
+                src="https://picsum.photos/seed/codeweva/96/96"
                 alt=""
                 className="size-6 rounded-full object-cover"
               />
@@ -191,12 +192,58 @@ function CommentRow({
           </button>
         </div>
         {!!comment.replies && (
-          <button className="mt-2 flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium text-yt-blue hover:bg-blue-500/10">
-            <svg viewBox="0 0 24 24" className="size-5" fill="currentColor">
+          <button
+            onClick={() => setRepliesOpen((v) => !v)}
+            className="mt-2 flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium text-yt-blue hover:bg-blue-500/10"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              className={`size-5 transition-transform ${repliesOpen ? "rotate-180" : ""}`}
+              fill="currentColor"
+            >
               <path d="M7 10l5 5 5-5z" />
             </svg>
-            {comment.replies} 件の返信
+            {repliesOpen ? "返信を非表示" : `${comment.replies} 件の返信`}
           </button>
+        )}
+        {!!comment.replies && repliesOpen && (
+          <div className="mt-3 space-y-4">
+            {mockReplies(comment).map((r) => (
+              <div key={r.id} className="flex gap-3">
+                <img
+                  src={r.avatar}
+                  alt=""
+                  className="size-8 shrink-0 rounded-full object-cover"
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {r.isCreator ? (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-yt-surface-2 px-2 py-0.5">
+                        <span className="text-xs font-medium">{r.author}</span>
+                        <VerifiedIcon className="size-3 text-yt-text-secondary" />
+                      </span>
+                    ) : (
+                      <span className="text-xs font-medium">{r.author}</span>
+                    )}
+                    <span className="text-[11px] text-yt-text-secondary">{r.timeAgo}</span>
+                  </div>
+                  <p className="mt-1 text-sm leading-relaxed">{r.text}</p>
+                  <div className="mt-1 flex items-center gap-3 text-yt-text-secondary">
+                    <button className="flex items-center gap-1 hover:text-yt-text">
+                      <LikeIcon className="size-4" />
+                      <span className="text-[11px]">{r.likes}</span>
+                    </button>
+                    <button className="hover:text-yt-text" aria-label="低評価">
+                      <DislikeIcon className="size-4" />
+                    </button>
+                    <button className="text-[11px] font-medium hover:text-yt-text px-2 py-0.5 rounded-full hover:bg-yt-surface-2">
+                      返信
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         )}
       </div>
       <button
@@ -207,6 +254,36 @@ function CommentRow({
       </button>
     </div>
   );
+}
+
+function mockReplies(c: Comment) {
+  const samples = [
+    { author: "@yu_san", text: "わかりすぎる。完全同意です。", likes: "84" },
+    { author: "@kk_music", text: "それな、コメ主の感想がうますぎる。", likes: "42" },
+    { author: "@aoiume", text: "そこ、自分も毎回鳥肌立つやつです。", likes: "31" },
+    { author: "@narumi_v", text: "保存しました、ありがとうございます！", likes: "12" },
+  ];
+  const total = c.replies ?? 0;
+  const count = Math.min(samples.length, total);
+  const items = samples.slice(0, count).map((s, i) => ({
+    id: `${c.id}-r${i}`,
+    avatar: `https://picsum.photos/seed/r${c.id}${i}/48/48`,
+    timeAgo: `${(i + 1) * 2} 時間前`,
+    isCreator: false,
+    ...s,
+  }));
+  // If pinned creator comment, first reply is from creator
+  if (c.isCreator && items[0]) {
+    items[0] = {
+      ...items[0],
+      author: "CodeWithEva",
+      avatar: "https://picsum.photos/seed/codeweva/96/96",
+      isCreator: true,
+      text: "コメントありがとうございます！次回も頑張ります 💪",
+      likes: "1.2K",
+    };
+  }
+  return items;
 }
 
 function parseLikes(s: string): number {

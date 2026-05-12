@@ -137,7 +137,7 @@ export function AccountButton({ email }: { email: string }) {
             <p className="text-xs text-yt-text-secondary truncate">@k_user</p>
             <p className="text-xs text-yt-text-secondary truncate mt-0.5">{email}</p>
             <Link
-              href="/channel/ch-ringo"
+              href="/channel/ch-codeweva"
               onClick={() => setOpen(false)}
               className="mt-2 inline-block text-sm text-yt-blue hover:underline"
             >
@@ -146,7 +146,7 @@ export function AccountButton({ email }: { email: string }) {
           </div>
         </div>
         <div className="py-1 border-b border-yt-border">
-          <MenuItem icon={<ChannelIcon />} label="あなたのチャンネル" href="/channel/ch-ringo" onClick={() => setOpen(false)} />
+          <MenuItem icon={<ChannelIcon />} label="あなたのチャンネル" href="/channel/ch-codeweva" onClick={() => setOpen(false)} />
           <MenuItem icon={<SwitchAccountIcon />} label="アカウントを切り替える" />
           <MenuItem icon={<SignOutIcon />} label="ログアウト" />
         </div>
@@ -176,37 +176,37 @@ export function AccountButton({ email }: { email: string }) {
 /* ---------------------- Notifications dropdown ---------------------- */
 const mockNotifications = [
   {
-    avatar: "https://picsum.photos/seed/ringo-avatar/96/96",
-    title: "椎名林檎が新しい動画を投稿しました: 松に鶴",
+    avatar: "https://picsum.photos/seed/codeweva/96/96",
+    title: "CodeWithEva が新しい動画を投稿しました: Next.js 16 で Cache Components を使いこなす",
     time: "1 時間前",
-    thumb: "https://i.ytimg.com/vi/3eQWfkA1cGc/hqdefault.jpg",
+    thumb: "https://picsum.photos/seed/nextjs-cache/240/135",
   },
   {
-    avatar: "https://picsum.photos/seed/u2/48/48",
-    title: "@miyu_jihen さんがあなたのコメントに返信しました",
+    avatar: "https://picsum.photos/seed/user-miyu/48/48",
+    title: "@miyu_codes さんがあなたのコメントに返信しました",
     time: "3 時間前",
   },
   {
-    avatar: "https://picsum.photos/seed/umj-avatar/96/96",
-    title: "Universal Music Japan のライブ配信が始まりました",
+    avatar: "https://picsum.photos/seed/techthreads/96/96",
+    title: "Tech Threads News のライブ配信が始まりました",
     time: "5 時間前",
-    thumb: "https://i.ytimg.com/vi/4tlUwgtgdZA/hqdefault.jpg",
+    thumb: "https://picsum.photos/seed/live-stage/240/135",
     live: true,
   },
   {
-    avatar: "https://picsum.photos/seed/u3/48/48",
-    title: "@kabuki_fan さんがあなたを登録しました",
+    avatar: "https://picsum.photos/seed/user-haruto/48/48",
+    title: "@haruto_dev さんがあなたを登録しました",
     time: "12 時間前",
   },
   {
-    avatar: "https://picsum.photos/seed/jihen-avatar/96/96",
-    title: "東京事変が新しい動画を投稿しました",
+    avatar: "https://picsum.photos/seed/pixelquest/96/96",
+    title: "Pixel Quest Gaming が新しい動画を投稿しました",
     time: "1 日前",
-    thumb: "https://i.ytimg.com/vi/ECxBHhMc7oI/hqdefault.jpg",
+    thumb: "https://picsum.photos/seed/elden-ring/240/135",
   },
   {
-    avatar: "https://picsum.photos/seed/natalie-avatar/96/96",
-    title: "音楽ナタリーが「椎名林檎」の動画をアップロードしました",
+    avatar: "https://picsum.photos/seed/lofigarden/96/96",
+    title: "Lo-Fi Garden の登録チャンネルから新しい動画が公開されました",
     time: "2 日前",
   },
 ];
@@ -321,8 +321,14 @@ export function SearchAutocomplete({
   onClose: () => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const recent = ["椎名林檎", "丸の内サディスティック", "東京事変", "本能", "罪と罰"];
-  const titles = videos.map((v) => v.title.replace(/^椎名林檎 - /, ""));
+  const recent = [
+    "Next.js 16",
+    "Lo-Fi BGM",
+    "Minecraft 100日",
+    "京都 旅行",
+    "TypeScript 7",
+  ];
+  const titles = videos.map((v) => v.title);
 
   const trimmed = query.trim();
   const filtered = trimmed

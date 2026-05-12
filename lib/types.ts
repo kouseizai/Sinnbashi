@@ -39,4 +39,12 @@ export type Short = {
   title: string;
   thumbnail: string;
   views: string;
+  src?: string;
+  bigText?: string;
+  accent?: "yellow" | "white" | "red" | "cyan" | "lime";
+  tag?: string;
+  channel?: string;
+  channelAvatar?: string;
+  likes?: string;
+  comments?: string;
 };

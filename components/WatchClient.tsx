@@ -5,11 +5,38 @@ import { EnhancedPlayer, type EnhancedPlayerHandle } from "./EnhancedPlayer";
 import { ChapterList } from "./ChapterList";
 import { Comments } from "./Comments";
 import { DescriptionCard } from "./DescriptionCard";
+import { LiveChat } from "./LiveChat";
 import { RecommendedList } from "./RecommendedList";
 import { SubscribeButton, WatchActions } from "./WatchActions";
 import { VerifiedIcon } from "./icons";
 import type { Channel, Comment, Video } from "@/lib/types";
 import type { Chapter } from "@/lib/extras";
+
+function hashtagsFor(video: { title: string; category: string }): string[] {
+  const tags = new Set<string>();
+  const t = video.title.toLowerCase();
+  if (t.includes("next.js")) tags.add("#nextjs");
+  if (t.includes("typescript")) tags.add("#typescript");
+  if (t.includes("lo-fi") || t.includes("lofi")) tags.add("#lofi");
+  if (t.includes("minecraft")) tags.add("#minecraft");
+  if (t.includes("elden")) tags.add("#eldenring");
+  if (t.includes("4k")) tags.add("#4k");
+  if (t.includes("ライブ") || t.includes("live")) tags.add("#live");
+  // category fallback
+  const catTag: Record<string, string> = {
+    Tech: "#programming",
+    Music: "#music",
+    Gaming: "#gaming",
+    Cooking: "#cooking",
+    Travel: "#travel",
+    Science: "#science",
+    Fitness: "#fitness",
+    Live: "#live",
+  };
+  if (catTag[video.category]) tags.add(catTag[video.category]);
+  tags.add("#shorts");
+  return Array.from(tags).slice(0, 3);
+}
 
 type Props = {
   video: Video;
@@ -48,15 +75,35 @@ export function WatchClient({
           onTimeUpdate={setCurrentTime}
         />
 
-        <h1 className="mt-3 text-xl font-bold leading-snug">{video.title}</h1>
+        <div className="mt-3 flex gap-2 text-sm text-yt-blue">
+          {hashtagsFor(video).map((tag) => (
+            <a
+              key={tag}
+              href={`/search?q=${encodeURIComponent(tag)}`}
+              className="hover:underline"
+            >
+              {tag}
+            </a>
+          ))}
+        </div>
+        <h1 className="mt-1 text-xl font-bold leading-snug">{video.title}</h1>
 
         <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <img
-              src={channel.avatar}
-              alt={channel.name}
-              className="size-10 rounded-full object-cover"
-            />
+            <span
+              className={`relative size-10 shrink-0 rounded-full ${video.duration === "LIVE" ? "ring-2 ring-yt-red ring-offset-2 ring-offset-yt-bg" : ""}`}
+            >
+              <img
+                src={channel.avatar}
+                alt={channel.name}
+                className="size-full rounded-full object-cover"
+              />
+              {video.duration === "LIVE" && (
+                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 rounded bg-yt-red px-1 text-[9px] font-bold tracking-wider">
+                  ライブ
+                </span>
+              )}
+            </span>
             <div>
               <div className="flex items-center gap-1">
                 <span className="font-medium">{channel.name}</span>
@@ -106,6 +153,7 @@ export function WatchClient({
       </div>
 
       <div className="hidden xl:block space-y-4">
+        {video.duration === "LIVE" && <LiveChat />}
         {chapters.length > 0 && (
           <ChapterList
             chapters={chapters}

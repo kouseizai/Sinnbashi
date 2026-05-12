@@ -22,7 +22,7 @@ import {
   SubsIcon,
   TrendingIcon,
 } from "./icons";
-import { channels } from "../lib/mock";
+import { channels, isChannelLive } from "../lib/mock";
 
 type Item = {
   icon: React.ComponentType<{ className?: string }>;
@@ -147,20 +147,32 @@ export function FullSidebar() {
         ))}
       </Section>
       <Section title="登録チャンネル">
-        {channels.slice(0, 6).map((c) => (
-          <Link
-            key={c.id}
-            href={`/channel/${c.id}`}
-            className="flex items-center gap-6 rounded-lg px-3 py-2 hover:bg-yt-surface-2"
-          >
-            <img
-              src={c.avatar}
-              alt=""
-              className="size-6 shrink-0 rounded-full object-cover"
-            />
-            <span className="text-sm truncate">{c.name}</span>
-          </Link>
-        ))}
+        {channels.slice(0, 8).map((c) => {
+          const live = isChannelLive(c.id);
+          return (
+            <Link
+              key={c.id}
+              href={`/channel/${c.id}`}
+              className="flex items-center gap-6 rounded-lg px-3 py-2 hover:bg-yt-surface-2"
+            >
+              <span
+                className={`relative size-6 shrink-0 rounded-full ${live ? "ring-2 ring-yt-red" : ""}`}
+              >
+                <img
+                  src={c.avatar}
+                  alt=""
+                  className="size-full rounded-full object-cover"
+                />
+              </span>
+              <span className="text-sm truncate flex-1">{c.name}</span>
+              {live && (
+                <span className="text-[10px] font-semibold uppercase text-yt-red">
+                  ライブ
+                </span>
+              )}
+            </Link>
+          );
+        })}
       </Section>
       <Section title="探索">
         {exploreItems.map((item) => (

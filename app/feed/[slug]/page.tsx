@@ -90,7 +90,9 @@ export default async function FeedSlug({
   if (slug === "history") list = [...videos].reverse();
   if (slug === "subscriptions")
     list = videos.filter((v) =>
-      ["ch-ringo", "ch-jihen", "ch-umj"].includes(v.channelId)
+      ["ch-codeweva", "ch-pixelquest", "ch-lofi", "ch-tech-news"].includes(
+        v.channelId
+      )
     );
   if (slug === "live") list = videos.filter((v) => v.duration === "LIVE");
 

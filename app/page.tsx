@@ -1,3 +1,4 @@
+import { ContinueWatchingRow } from "@/components/ContinueWatchingRow";
 import { FilterChips } from "@/components/FilterChips";
 import { ShortsRow } from "@/components/ShortsRow";
 import { VideoCard } from "@/components/VideoCard";
@@ -52,7 +53,12 @@ export default async function Home({
           </div>
         )}
       </div>
-      {(!chip || chip === "すべて") && <ShortsRow />}
+      {(!chip || chip === "すべて") && (
+        <>
+          <ContinueWatchingRow />
+          <ShortsRow />
+        </>
+      )}
       {below.length > 0 && (
         <div className="px-4 pt-8 pb-12">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-10">
