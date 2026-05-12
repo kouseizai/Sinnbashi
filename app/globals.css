@@ -1,26 +1,134 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --yt-bg: #0f0f0f;
+  --yt-surface: #212121;
+  --yt-surface-2: #272727;
+  --yt-surface-3: #3f3f3f;
+  --yt-text: #f1f1f1;
+  --yt-text-secondary: #aaaaaa;
+  --yt-border: #303030;
+  --yt-red: #ff0000;
+  --yt-blue: #3ea6ff;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-yt-bg: var(--yt-bg);
+  --color-yt-surface: var(--yt-surface);
+  --color-yt-surface-2: var(--yt-surface-2);
+  --color-yt-surface-3: var(--yt-surface-3);
+  --color-yt-text: var(--yt-text);
+  --color-yt-text-secondary: var(--yt-text-secondary);
+  --color-yt-border: var(--yt-border);
+  --color-yt-red: var(--yt-red);
+  --color-yt-blue: var(--yt-blue);
+  --font-sans: var(--font-roboto), "Roboto", Arial, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  background: var(--yt-bg);
+  color: var(--yt-text);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-roboto), "Roboto", "Hiragino Sans", "Yu Gothic UI",
+    Arial, sans-serif;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* YouTube-like custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #5a5a5a;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #717171;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Video player range input */
+input[type="range"].vp-range {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  width: 100%;
+  height: 14px;
+  cursor: pointer;
+}
+input[type="range"].vp-range::-webkit-slider-runnable-track {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+input[type="range"].vp-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: var(--yt-red);
+  border-radius: 50%;
+  margin-top: -5px;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+}
+input[type="range"].vp-range::-moz-range-track {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+input[type="range"].vp-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: var(--yt-red);
+  border: none;
+  border-radius: 50%;
+}
+
+@keyframes vp-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.vp-fade-in {
+  animation: vp-fade-in 0.18s ease-out;
+}
+
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
